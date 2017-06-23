@@ -10,35 +10,36 @@
                 "properties": {
                     "age": {
                         "default": 20,
-                        "description": "An explanation about the purpose of this instance.",
+                        "description": "",
                         "id": "/properties/additional_info/items/properties/age",
-                        "title": "The Age Schema",
+                        "title": "Age",
                         "type": "integer"
                     }
                 },
                 "type": "object"
             },
-            "type": "array"
+            "type": "array",
+	    "title": ""
         },
         "description": {
             "default": "This is John's description",
-            "description": "An explanation about the purpose of this instance.",
+            "description": "",
             "id": "/properties/description",
-            "title": "The Description Schema",
+            "title": "Description",
             "type": "string"
         },
         "name": {
             "default": "John",
-            "description": "An explanation about the purpose of this instance.",
+            "description": "",
             "id": "/properties/name",
-            "title": "The Name Schema",
+            "title": "Name",
             "type": "string"
         },
         "url": {
             "default": "https://www.sitebuilderreport.com/assets/facebook-stock-up-446fff24fb11820517c520c4a5a4c032.jpg",
-            "description": "An explanation about the purpose of this instance.",
+            "description": "",
             "id": "/properties/url",
-            "title": "The Url Schema",
+            "title": "Url",
             "type": "string"
         }
     },

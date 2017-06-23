@@ -8,32 +8,44 @@ export default class BioCard extends React.Component {
     super(props)
     this.state = {
       step: 1,
-      dataJSON: {},
+      dataJSON: {
+        card_data: {},
+        configs: {}
+      },
+      oasisObj: {},
       schemaJSON: undefined,
-      configSchemaJSON: undefined,
-      configJSON: {}
+      optionalConfigJSON: {},
+      optionalConfigSchemaJSON: undefined
     }
   }
 
   exportData() {
-    return this.state;
+    let getDataObj = {
+      step: this.state.step,
+      dataJSON: this.state.dataJSON.card_data,
+      schemaJSON: this.state.schemaJSON,
+      optionalConfigJSON: this.state.dataJSON.configs,
+      optionalConfigSchemaJSON: this.state.optionalConfigSchemaJSON
+    }
+    return getDataObj;
   }
 
   componentDidMount() {
+    console.log("componentDidMount", this.props.dataURL)
+    console.log(this.props)
     // get sample json data based on type i.e string or object
     if (typeof this.props.dataURL === "string"){
-      axios.all([axios.get(this.props.dataURL), axios.get(this.props.schemaURL), axios.get(this.props.configURL), axios.get(this.props.configSchemaURL)])
-        .then(axios.spread((card, schema, config, config_schema) => {
-          // let newDataJson = card.data;
-          // newDataJson.additional_info = [
-          //   {"age" : 20},
-          //   {"date_of_birth" : "1-1-1997"}
-          // ];
+      axios.all([axios.get(this.props.dataURL), axios.get(this.props.schemaURL), axios.get(this.props.optionalConfigURL), axios.get(this.props.optionalConfigSchemaURL)])
+        .then(axios.spread((card, schema, opt_config, opt_config_schema) => {
           this.setState({
-            dataJSON: /*newDataJson*/ card.data,
+            dataJSON: {
+              card_data: card.data,
+              configs: opt_config.data
+            },
             schemaJSON: schema.data,
-            configSchemaJSON: config_schema.data,
-            configJSON: config.data.optional
+            optionalConfigJSON: opt_config.data,
+            optionalConfigSchemaJSON: opt_config_schema.data,
+            oasisObj: this.props.oasisObj
           });
         }));
     }
@@ -54,26 +66,31 @@ export default class BioCard extends React.Component {
   }
 
   onChangeHandler({formData}) {
-    // console.log(formData, this.state.step, "...................")
     switch (this.state.step) {
       case 1:
+        this.setState((prevStep, prop) => {
+          let dataJSON = prevStep.dataJSON;
+          dataJSON.card_data = formData
+          return {
+            dataJSON: dataJSON
+          }
+        })
         break;
       case 2:
-        this.setState({
-          dataJSON: formData
-        });
-        //console.log(this.state.dataJSON);
-        break;
-      case 3:
-        this.setState({
-          configJSON: formData
+        this.setState((prevStep, prop) => {
+          let dataJSON = prevStep.dataJSON;
+          console.log(dataJSON, "dataJSON")
+          dataJSON.configs = formData
+          return {
+            dataJSON: dataJSON
+            // optionalConfigJSON: dataJSON
+          }
         })
         break;
     }
   }
 
   onSubmitHandler({formData}) {
-     //console.log(formData, "on Submit =======================")
     switch(this.state.step) {
       case 1:
         this.setState({
@@ -81,26 +98,18 @@ export default class BioCard extends React.Component {
         });
         break;
       case 2:
-        this.setState({
-          step: 3,
-          dataJSON: formData
-        });
-        break;
-      case 3:
         alert("The card is published");
         break;
     }
   }
 
   renderAdditionalInformation() {
-    let styles = {
 
-    }
     let styles1 = {
       fontSize: 20,
       paddingBottom: 20
     }
-    const data = this.state.dataJSON;
+    const data = this.state.dataJSON.card_data;
     let list = data.additional_info.map((e, i) => {
              //console.log(e, 'ASDASDASDASDAS')
 
@@ -108,10 +117,10 @@ export default class BioCard extends React.Component {
          const keyName = Object.keys(e)[0];
          const keyValue = e[keyName];
          return (
-
+           
            <div key={i}>
 
-             <div className = "card-additional-info-keys" style = {styles}> {keyName} </div>
+             <div className = "card-additional-info-keys"> {keyName} </div>
              <div className = "card-additional-info-key-values" style = {styles1}> {keyValue} </div>
            </div>
          );
@@ -123,56 +132,101 @@ export default class BioCard extends React.Component {
 }
 
   renderLaptop() {
-    // console.log(this.state.configJSON, this.state.step,"inside this.state.configJSON")
-    const data = this.state.dataJSON;
-    let styles = {
-      backgroundColor: this.state.configJSON.background_color
+    // console.log(this.state.schemaJSON, this.state, this.props, "inside renderLaptop")
+    if (this.state.schemaJSON === undefined ){
+      return(<div>Loading</div>)
+    } else {
+      const data = this.state.dataJSON.card_data;
+      let styles = this.state.dataJSON.configs ? {backgroundColor: this.state.dataJSON.configs.background_color} : undefined
+      let styles1 = {
+        width: 200,
+        height: 200
+      }
+      let styles2 = {
+        fontSize: 20,
+        paddingBottom: 20
+      }
+
+      //console.log(data, "data-----", this.state.step, this.state.configJSON)
+      return (
+        <div className = "proto-card-div ui grid" style = {styles}>
+          {/* <div className = "col-sm-6"> */}
+
+          <div className = "twelve wide column">
+            <div className = "card-keys">Name</div>
+            <div className = "card-key-values" style={styles2}>{data.name}</div>
+            <div className = "card-keys">Description</div>
+            <div className = "card-key-values" style={styles2}>{data.description}</div>
+
+            {this.renderAdditionalInformation()}
+            {/* <div className = "card-key-values">{renderAdditionalInformation()}</div> */}
+
+          </div>
+        {/* </div> */}
+
+        <div className = "four wide column">
+          <img src = {data.url} style = {styles1}></img>
+        </div>
+
+         </div>
+      )
     }
+  }
+
+  renderSEOAdditionalInformation() {
+
     let styles1 = {
-      width: 200,
-      height: 200
-    }
-    let styles2 = {
       fontSize: 20,
       paddingBottom: 20
     }
+    const data = this.state.dataJSON.card_data;
+    let list = data.additional_info.map((e, i) => {
+             //console.log(e, 'ASDASDASDASDAS')
 
-    //console.log(data, "data-----", this.state.step, this.state.configJSON)
-    return (
-      <div className = "proto-card-div col-sm-12" style = {styles}>
-        {/* <div className = "col-sm-6"> */}
 
-        <div className = "col-sm-9">
-          <div className = "card-keys">Name</div>
-          <div className = "card-key-values" style={styles2}>{data.name}</div>
-          <div className = "card-keys">Description</div>
-          <div className = "card-key-values" style={styles2}>{data.description}</div>
+         const keyName = Object.keys(e)[0];
+         const keyValue = e[keyName];
+         let seo_blockquote = `
+           <div key=${i}>
+             <div className = "card-additional-info-keys"> ${keyName} </div>
+             <div className = "card-additional-info-key-values" style = ${styles1}> ${keyValue} </div>
+           </div>`
+         return seo_blockquote;
 
-          {this.renderAdditionalInformation()}
-          {/* <div className = "card-key-values">{renderAdditionalInformation()}</div> */}
+    })
+  }
 
-        </div>
-      {/* </div> */}
-
-      <div className = "col-sm-3">
-        <img src = {data.url} style = {styles1}></img>
+  renderSEO() {
+    console.log(this.state.dataJSON.card_data, "this.state.dataJSON in seo mode")
+    if (this.state.schemaJSON === undefined ){
+      return(<div>Loading</div>)
+    } else {
+      const data = this.state.dataJSON.card_data;
+    }
+    let seo_blockquote = `<blockquote>
+      <div className = "twelve wide column">
+        <div className = "card-keys">Name</div>
+        <div className = "card-key-values" style=${styles2}>${data.name}</div>
+        <div className = "card-keys">Description</div>
+        <div className = "card-key-values" style=${styles2}>${data.description}</div>
+        ${this.renderSEOAdditionalInformation()}
       </div>
 
-       </div>
-    )
+      <div className = "four wide column">
+        <img src = ${data.url} style = ${styles1}></img>
+      </div>
+
+    </blockquote>`
+    return seo_blockquote;
   }
 
   renderSchemaJSON() {
-  //  console.log(this.state.step, "renderSchemaJSON")
     switch(this.state.step){
       case 1:
-        return this.state.configSchemaJSON.properties.mandatory;
-        break;
-      case 3:
-        return this.state.configSchemaJSON.properties.optional;
+        return this.state.schemaJSON;
         break;
       case 2:
-        return this.state.schemaJSON;
+        return this.state.optionalConfigSchemaJSON;
         break;
     }
   }
@@ -180,13 +234,10 @@ export default class BioCard extends React.Component {
   renderFormData() {
     switch(this.state.step) {
       case 1:
-        return this.state.configJSON.mandatory;
-        break;
-      case 3:
-        return this.state.configJSON;
+        return this.state.dataJSON.card_data;
         break;
       case 2:
-        return this.state.dataJSON;
+        return this.state.dataJSON.configs;
         break;
     }
   }
@@ -197,9 +248,6 @@ export default class BioCard extends React.Component {
         return '';
         break;
       case 2:
-        return '< Back to Mandatory selection';
-        break;
-      case 3:
         return '< Back to building the card';
         break;
     }
@@ -208,10 +256,9 @@ export default class BioCard extends React.Component {
   showButtonText() {
     switch(this.state.step) {
       case 1:
-      case 2:
         return 'Proceed to next step';
         break;
-      case 3:
+      case 2:
         return 'Publish';
         break;
     }
@@ -222,7 +269,6 @@ export default class BioCard extends React.Component {
     this.setState({
       step: prev_step
     })
-    //console.log("show prev step", this.state.step)
   }
 
   renderEdit() {
@@ -230,27 +276,30 @@ export default class BioCard extends React.Component {
     if (this.state.schemaJSON === undefined) {
       return(<div>Loading</div>)
     } else {
+      console.log(this.state.dataJSON);
       return (
-        // <div className="col-sm-12">
-        //   <div className = "col-sm-6" id="proto_bio_form_div">
-        //     <Form schema = {this.renderSchemaJSON()}
-        //     onSubmit = {((e) => this.onSubmitHandler(e))}
-        //     onChange = {((e) => this.onChangeHandler(e))}
-        //     formData = {this.renderFormData()}>
-        //     <a id="proto_prev_link"onClick = {((e) => this.onPrevHandler(e))}>{this.showLinkText()} </a>
-        //     <button type="submit" className="btn btn-info">{this.showButtonText()}</button>
-        //     </Form>
-        //   </div>
-          <div className = "col-sm-6" id="proto_bio_card_div">
+         <div className="ui grid">
+           <div className = "eight wide column" id="protograph_bio_form_div">
+            <Form schema = {this.renderSchemaJSON()}
+            onSubmit = {((e) => this.onSubmitHandler(e))}
+            onChange = {((e) => this.onChangeHandler(e))}
+            formData = {this.renderFormData()}>
+            <div className="prev-and-submit-button-div">
+              <a id="protograph_prev_link" onClick = {((e) => this.onPrevHandler(e))}>{this.showLinkText()} </a>
+              <button type="submit" className="ui primary button">{this.showButtonText()}</button>
+            </div>
+            </Form>
+          </div>
+          <div className = "eight wide column" id="proto_bio_card_div">
             {this.renderLaptop()}
-           </div>
+          </div>
         // </div>
       )
     }
   }
 
   render() {
-    // console.log(this.props.mode, "mode")
+    let functionToReturn;
     switch(this.props.mode) {
       case 'laptop' :
         return this.renderLaptop();
@@ -264,6 +313,10 @@ export default class BioCard extends React.Component {
       case 'edit' :
         return this.renderEdit();
         break;
+      case 'SEO' :
+        return this.renderSEO();
+        break;
+
     }
 
   }

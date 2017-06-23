@@ -4,33 +4,65 @@
     <meta charset = "UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bio Card</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="./src/css/styles.css">
+    <link rel="stylesheet" href="lib/css/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="src/css/styles.css">
   </head>
   <body>
     <div id="bio_div"></div></br>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <script src = "dist/0.0.1/card.min.js"></script>
+    <script src = "./dist/0.0.1/card.min.js"></script>
     <script type="text/javascript">
+
+    /****************************************************************************************************************/
+
+    // let param = location.search.split('HtmlCast_Unique_Identifier=')[1]
+    // function get(url) {
+    //   return new Promise(function(resolve, reject) {
+    //     var req = new XMLHttpRequest();
+    //     req.open('GET', url);
+    //     req.onload = function() {
+    //       if (req.status == 200) {
+    //         resolve(req.response);
+    //       }
+    //       else {
+    //         reject(Error(req.statusText));
+    //       }
+    //     };
+    //     req.onerror = function() {
+    //       reject(Error("Network Error"));
+    //     };
+    //     req.send();
+    //   });
+    // }
+    // get('http://192.168.0.103:3000/api/v1/view_casts/'+param).then(function (response) {
+    //   console.log("Success!", response);
+    //   let response_object = JSON.parse(response)
+    //   var x = new ProtoGraph.Card.toBio()
+    //   console.log(x, "xxxx")
+    // x.init({
+    //   selector: document.querySelector('#bio_div'),
+    //   data_url: '/dist/0.0.1/sample.json',
+    //   schema_url: '/dist/0.0.1/schema.json',
+    //   configuration_url: '/dist/0.0.1/configuration_sample.json', //will come from local folder
+    //   configuration_schema_url: '/dist/0.0.1/configuration_schema.json' //will come from local folder
+    // });
+    //   // x.renderLaptop();
+    //   x.renderSEO();
+    // }, function(error) {
+    //   console.error("Failed!", error);
+    // })
+
+    /****************************************************************************************************************/
+
     var x = new ProtoGraph.Card.toBio()
     x.init({
       selector: document.querySelector('#bio_div'),
-      data_url: 'https://raw.githubusercontent.com/abha-m/ProtoGraph.Schemas/abha/toBio/0.0.1/sample.json',
-      schema_url: 'https://raw.githubusercontent.com/abha-m/ProtoGraph.Schemas/abha/toBio/0.0.1/schema.json',
-      configuration_url: 'dist/0.0.1/configuration_sample.json', //will come from local folder
-      configuration_schema_url: 'dist/0.0.1/configuration_schema.json' //will come from local folder
-    })
+      data_url: './dist/0.0.1/sample.json',
+      schema_url: './dist/0.0.1/schema.json',
+      configuration_url: './dist/0.0.1/configuration_sample.json', //will come from local folder
+      configuration_schema_url: './dist/0.0.1/configuration_schema.json' //will come from local folder
+    });
     x.renderEdit();
-    x.getData();
-    // var y = new ProtoGraph.Card.toExplain()
-    // y.init({
-    //   selector: document.querySelector('#explainer-div-1'),
-    //   data_url: './dist/v0.0.1/sample.json',
-    //   schema_url: './dist/v0.0.1/schema.json'
-    // })
-    // y.renderLaptop();
-
+    // x.renderSEO();
     </script>
   </body>
 </html>
