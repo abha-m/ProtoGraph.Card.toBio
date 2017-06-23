@@ -1,0 +1,46 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "definitions": {},
+    "id": "http://example.com/example.json",
+    "properties": {
+        "additional_info": {
+            "id": "/properties/additional_info",
+            "items": {
+                "id": "/properties/additional_info/items",
+                "properties": {
+                    "age": {
+                        "default": 20,
+                        "description": "An explanation about the purpose of this instance.",
+                        "id": "/properties/additional_info/items/properties/age",
+                        "title": "The Age Schema",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "type": "array"
+        },
+        "description": {
+            "default": "This is John's description",
+            "description": "An explanation about the purpose of this instance.",
+            "id": "/properties/description",
+            "title": "The Description Schema",
+            "type": "string"
+        },
+        "name": {
+            "default": "John",
+            "description": "An explanation about the purpose of this instance.",
+            "id": "/properties/name",
+            "title": "The Name Schema",
+            "type": "string"
+        },
+        "url": {
+            "default": "https://www.sitebuilderreport.com/assets/facebook-stock-up-446fff24fb11820517c520c4a5a4c032.jpg",
+            "description": "An explanation about the purpose of this instance.",
+            "id": "/properties/url",
+            "title": "The Url Schema",
+            "type": "string"
+        }
+    },
+    "type": "object"
+}

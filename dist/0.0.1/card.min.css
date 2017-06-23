@@ -1,0 +1,59 @@
+#protograph_headlineh3_form_div {
+  display: inline-block;
+  top: 20px;
+}
+
+#protograph_headlineh3_card_div {
+  display: inline-block;
+  float: right;
+  top: 20px;
+}
+
+#protograph_prev_link {
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+fieldset {
+  border-width: 1px;
+}
+
+.ui.grid {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.protograph_headline{
+  font-size: 20px;
+  line-height: 1.2;
+  font-family: medium-content-sans-serif-font,"Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Arial,sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  letter-spacing: -.02em;
+  min-height: 24px;
+  /*padding-bottom: 18px;*/
+  color: white;
+  padding-left:5px;
+}
+
+.protograph-card-div {
+  padding: 6px 5px;
+  color: #fff;
+  position: relative;
+}
+
+.prev-and-submit-button-div {
+  margin-top: 10px
+}
+
+#protograph_read_more_link {
+  color: white;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 450px){
+  #protograph_headlineh3_card_div {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+}
