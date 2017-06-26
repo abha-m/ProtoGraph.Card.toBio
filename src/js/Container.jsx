@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
-import Form from 'react-jsonschema-form';
+// import Form from 'react-jsonschema-form';
+import Form from '../../lib/js/react-jsonschema-form';
 
 export default class BioCard extends React.Component {
   constructor(props) {
@@ -117,7 +118,7 @@ export default class BioCard extends React.Component {
          const keyName = Object.keys(e)[0];
          const keyValue = e[keyName];
          return (
-           
+
            <div key={i}>
 
              <div className = "card-additional-info-keys"> {keyName} </div>
@@ -147,7 +148,7 @@ export default class BioCard extends React.Component {
         paddingBottom: 20
       }
 
-      //console.log(data, "data-----", this.state.step, this.state.configJSON)
+      console.log(data, "data-----", this.state.step, this.state.configJSON)
       return (
         <div className = "proto-card-div ui grid" style = {styles}>
           {/* <div className = "col-sm-6"> */}
@@ -165,7 +166,7 @@ export default class BioCard extends React.Component {
         {/* </div> */}
 
         <div className = "four wide column">
-          <img src = {data.url} style = {styles1}></img>
+          <img src = {data.logo_image} style = {styles1}></img>
         </div>
 
          </div>
