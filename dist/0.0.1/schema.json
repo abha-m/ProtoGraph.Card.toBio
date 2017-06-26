@@ -35,13 +35,23 @@
             "title": "Name",
             "type": "string"
         },
-        "url": {
-            "default": "https://www.sitebuilderreport.com/assets/facebook-stock-up-446fff24fb11820517c520c4a5a4c032.jpg",
-            "description": "",
-            "id": "/properties/url",
-            "title": "Url",
-            "type": "string"
+
+        "logo_image": {
+            "title": "",
+            "type": "object",
+            "properties": {
+                "image": {
+                    "default": "https://www.sitebuilderreport.com/assets/facebook-stock-up-446fff24fb11820517c520c4a5a4c032.jpg",
+                    "description": "",
+                    "id": "/properties/data/properties/cover_data/properties/logo_image",
+                    "title": "Upload an image",
+                    "type": "string",
+                    "format": "data-url"
+                }
+            },
+            "required": ["image"]
         }
+
     },
     "type": "object"
 }
